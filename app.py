@@ -9,7 +9,7 @@ app = Flask(__name__)
 # [주의!] 'your_app_password'를 Tier 3에서 만든 실제 비밀번호로 변경하세요.
 db_config = {
     'user': 'app_user',
-    'password': 'your_app_password',
+    'password': '1234',
     'host': 'localhost', # 2티어와 3티어가 같은 VM에 있음
     'database': 'my_service'
 }
