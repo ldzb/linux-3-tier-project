@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-g">
+    <title>3-Tier 로그인</title>
+    <style>
+        body { font-family: sans-serif; display: grid; place-items: center; min-height: 100vh; background-color: #f4f4f4; }
+        #login-box { background: #fff; border: 1px solid #ccc; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        div { margin-bottom: 15px; }
+        input { width: 250px; padding: 8px; }
+        button { width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; cursor: pointer; }
+        #result { margin-top: 15px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div id="login-box">
+        <h2>3-Tier 로그인</h2>
+        <div>
+            <input type="text" id="username" placeholder="Username (admin)">
+        </div>
+        <div>
+            <input type="password" id="password" placeholder="Password (1234)">
+        </div>
+        <button onclick="tryLogin()">로그인</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function tryLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const resultDiv = document.getElementById('result');
+
+            try {
+                // /login API (Tier 2)로 ID/PW를 JSON으로 보냅니다.
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: username, password: password })
+                });
+
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    resultDiv.style.color = 'green';
+                    resultDiv.innerText = data.message;
+                } else {
+                    resultDiv.style.color = 'red';
+                    resultDiv.innerText = data.message;
+                }
+            } catch (error) {
+                resultDiv.style.color = 'red';
+                resultDiv.innerText = '서버 통신 오류: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
